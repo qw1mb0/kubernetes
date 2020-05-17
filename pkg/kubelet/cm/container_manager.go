@@ -38,9 +38,10 @@ import (
 	"strings"
 )
 
+// ActivePodsFunc is a function that returns a list of pods to reconcile.
 type ActivePodsFunc func() []*v1.Pod
 
-// Manages the containers running on a machine.
+// ContainerManager manages the containers running on a machine.
 type ContainerManager interface {
 	// Runs the container manager's housekeeping.
 	// - Ensures that the Docker daemon is in a container.
@@ -117,6 +118,7 @@ type ContainerManager interface {
 	UpdateAllocatedDevices()
 }
 
+// NodeConfig node configuration that is being used by the container manager
 type NodeConfig struct {
 	RuntimeCgroupsName    string
 	SystemCgroupsName     string
@@ -137,6 +139,7 @@ type NodeConfig struct {
 	ExperimentalTopologyManagerPolicy     string
 }
 
+// NodeAllocatableConfig allocatable node configuration
 type NodeAllocatableConfig struct {
 	KubeReservedCgroupName   string
 	SystemReservedCgroupName string
@@ -147,6 +150,7 @@ type NodeAllocatableConfig struct {
 	HardEvictionThresholds   []evictionapi.Threshold
 }
 
+// Status returns internal Status
 type Status struct {
 	// Any soft requirements that were unsatisfied.
 	SoftRequirements error

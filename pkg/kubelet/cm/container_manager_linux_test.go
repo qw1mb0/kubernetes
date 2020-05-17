@@ -149,27 +149,27 @@ func TestSoftRequirementsValidationSuccess(t *testing.T) {
 	assert.True(t, f.cpuHardcapping, "cpu hardcapping is expected to be enabled")
 }
 
-func TestGetCpuWeight(t *testing.T) {
-	assert.Equal(t, uint64(0), getCpuWeight(nil))
+func TestgetCPUWeight(t *testing.T) {
+	assert.Equal(t, uint64(0), getCPUWeight(nil))
 
 	v := uint64(2)
-	assert.Equal(t, uint64(1), getCpuWeight(&v))
+	assert.Equal(t, uint64(1), getCPUWeight(&v))
 
 	v = uint64(262144)
-	assert.Equal(t, uint64(10000), getCpuWeight(&v))
+	assert.Equal(t, uint64(10000), getCPUWeight(&v))
 
 	v = uint64(1000000000)
-	assert.Equal(t, uint64(10000), getCpuWeight(&v))
+	assert.Equal(t, uint64(10000), getCPUWeight(&v))
 }
 
-func TestGetCpuMax(t *testing.T) {
-	assert.Equal(t, getCpuMax(nil, nil), "max 100000")
+func TestgetCPUMax(t *testing.T) {
+	assert.Equal(t, getCPUMax(nil, nil), "max 100000")
 
 	quota := int64(50000)
 	period := uint64(200000)
-	assert.Equal(t, "50000 200000", getCpuMax(&quota, &period))
+	assert.Equal(t, "50000 200000", getCPUMax(&quota, &period))
 
-	assert.Equal(t, "max 200000", getCpuMax(nil, &period))
+	assert.Equal(t, "max 200000", getCPUMax(nil, &period))
 
-	assert.Equal(t, "50000 100000", getCpuMax(&quota, nil))
+	assert.Equal(t, "50000 100000", getCPUMax(&quota, nil))
 }

@@ -125,10 +125,12 @@ func (cm *containerManagerStub) UpdateAllocatedDevices() {
 	return
 }
 
+// NewStubContainerManager create stub container manager.
 func NewStubContainerManager() ContainerManager {
 	return &containerManagerStub{shouldResetExtendedResourceCapacity: false}
 }
 
+// NewStubContainerManagerWithExtendedResource create stub container manager with extended resources.
 func NewStubContainerManagerWithExtendedResource(shouldResetExtendedResourceCapacity bool) ContainerManager {
 	return &containerManagerStub{shouldResetExtendedResourceCapacity: shouldResetExtendedResourceCapacity}
 }

@@ -51,7 +51,7 @@ func (m *kubeGenericRuntimeManager) generateLinuxContainerConfig(container *v1.C
 	}
 
 	// set linux container resources
-	var cpuShares int64
+	var CPUShares int64
 	cpuRequest := container.Resources.Requests.Cpu()
 	cpuLimit := container.Resources.Limits.Cpu()
 	memoryLimit := container.Resources.Limits.Memory().Value()
@@ -61,13 +61,13 @@ func (m *kubeGenericRuntimeManager) generateLinuxContainerConfig(container *v1.C
 	// API server does this for new containers, but we repeat this logic in Kubelet
 	// for containers running on existing Kubernetes clusters.
 	if cpuRequest.IsZero() && !cpuLimit.IsZero() {
-		cpuShares = milliCPUToShares(cpuLimit.MilliValue())
+		CPUShares = milliCPUToShares(cpuLimit.MilliValue())
 	} else {
 		// if cpuRequest.Amount is nil, then milliCPUToShares will return the minimal number
 		// of CPU shares.
-		cpuShares = milliCPUToShares(cpuRequest.MilliValue())
+		CPUShares = milliCPUToShares(cpuRequest.MilliValue())
 	}
-	lc.Resources.CpuShares = cpuShares
+	lc.Resources.CPUShares = CPUShares
 	if memoryLimit != 0 {
 		lc.Resources.MemoryLimitInBytes = memoryLimit
 	}
@@ -78,13 +78,13 @@ func (m *kubeGenericRuntimeManager) generateLinuxContainerConfig(container *v1.C
 	if m.cpuCFSQuota {
 		// if cpuLimit.Amount is nil, then the appropriate default value is returned
 		// to allow full usage of cpu resource.
-		cpuPeriod := int64(quotaPeriod)
+		CPUPeriod := int64(quotaPeriod)
 		if utilfeature.DefaultFeatureGate.Enabled(kubefeatures.CPUCFSQuotaPeriod) {
-			cpuPeriod = int64(m.cpuCFSQuotaPeriod.Duration / time.Microsecond)
+			CPUPeriod = int64(m.cpuCFSQuotaPeriod.Duration / time.Microsecond)
 		}
-		cpuQuota := milliCPUToQuota(cpuLimit.MilliValue(), cpuPeriod)
-		lc.Resources.CpuQuota = cpuQuota
-		lc.Resources.CpuPeriod = cpuPeriod
+		CPUQuota := milliCPUToQuota(cpuLimit.MilliValue(), CPUPeriod)
+		lc.Resources.CPUQuota = CPUQuota
+		lc.Resources.CPUPeriod = CPUPeriod
 	}
 
 	lc.Resources.HugepageLimits = GetHugepageLimitsFromResources(container.Resources)

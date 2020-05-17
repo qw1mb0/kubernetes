@@ -50,8 +50,8 @@ func makePodToVerifyCgroupSize(cgroupNames []string, expectedCPU string, expecte
 	command := ""
 	for _, cgroupFsName := range cgroupFsNames {
 		memLimitCgroup := filepath.Join("/host_cgroups/memory", cgroupFsName, "memory.limit_in_bytes")
-		cpuQuotaCgroup := filepath.Join("/host_cgroups/cpu", cgroupFsName, "cpu.cfs_quota_us")
-		localCommand := "if [ ! $(cat " + memLimitCgroup + ") == " + expectedMemory + " ] || [ ! $(cat " + cpuQuotaCgroup + ") == " + expectedCPU + " ]; then exit 1; fi; "
+		CPUQuotaCgroup := filepath.Join("/host_cgroups/cpu", cgroupFsName, "cpu.cfs_quota_us")
+		localCommand := "if [ ! $(cat " + memLimitCgroup + ") == " + expectedMemory + " ] || [ ! $(cat " + CPUQuotaCgroup + ") == " + expectedCPU + " ]; then exit 1; fi; "
 
 		framework.Logf("command: %v: ", localCommand)
 		command += localCommand

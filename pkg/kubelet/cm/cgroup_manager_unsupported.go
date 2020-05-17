@@ -25,11 +25,13 @@ type unsupportedCgroupManager struct{}
 // Make sure that unsupportedCgroupManager implements the CgroupManager interface
 var _ CgroupManager = &unsupportedCgroupManager{}
 
+// CgroupSubsystems holds information about the mounted cgroup subsystems
 type CgroupSubsystems struct {
 	Mounts      []interface{}
 	MountPoints map[string]string
 }
 
+// NewCgroupManager is a factory method that returns a unsupported CgroupManager
 func NewCgroupManager(_ interface{}) CgroupManager {
 	return &unsupportedCgroupManager{}
 }
@@ -70,28 +72,36 @@ func (m *unsupportedCgroupManager) ReduceCPULimits(cgroupName CgroupName) error 
 	return nil
 }
 
+// RootCgroupName define root cgroup name
 var RootCgroupName = CgroupName([]string{})
 
+// NewCgroupName composes a new cgroup name.
+// Use RootCgroupName as base to start at the root.
 func NewCgroupName(base CgroupName, components ...string) CgroupName {
 	return CgroupName(append(base, components...))
 }
 
+// ToSystemd plug that return empty string
 func (cgroupName CgroupName) ToSystemd() string {
 	return ""
 }
 
+// ParseSystemdToCgroupName plug that return empty CgroupName
 func ParseSystemdToCgroupName(name string) CgroupName {
 	return nil
 }
 
+// ToCgroupfs plug that return empty string
 func (cgroupName CgroupName) ToCgroupfs() string {
 	return ""
 }
 
+// ParseCgroupfsToCgroupName plug that return empty CgroupNam
 func ParseCgroupfsToCgroupName(name string) CgroupName {
 	return nil
 }
 
+// IsSystemdStyleName plug that return false
 func IsSystemdStyleName(name string) bool {
 	return false
 }

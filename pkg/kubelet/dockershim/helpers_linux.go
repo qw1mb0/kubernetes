@@ -108,9 +108,9 @@ func (ds *dockerService) updateCreateConfig(
 				// Memory and MemorySwap are set to the same value, this prevents containers from using any swap.
 				Memory:     rOpts.MemoryLimitInBytes,
 				MemorySwap: rOpts.MemoryLimitInBytes,
-				CPUShares:  rOpts.CpuShares,
-				CPUQuota:   rOpts.CpuQuota,
-				CPUPeriod:  rOpts.CpuPeriod,
+				CPUShares:  rOpts.CPUShares,
+				CPUQuota:   rOpts.CPUQuota,
+				CPUPeriod:  rOpts.CPUPeriod,
 			}
 			createConfig.HostConfig.OomScoreAdj = int(rOpts.OomScoreAdj)
 		}

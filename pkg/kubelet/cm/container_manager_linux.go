@@ -200,6 +200,7 @@ func validateSystemRequirements(mountUtil mount.Interface) (features, error) {
 	return f, nil
 }
 
+// NewContainerManager create linux container manager.
 // TODO(vmarmol): Add limits to the system containers.
 // Takes the absolute name of the specified containers.
 // Empty container name disables use of the specified container.
@@ -378,8 +379,10 @@ func createManager(containerName string) *fs.Manager {
 	}
 }
 
+// KernelTunableBehavior kernel flags
 type KernelTunableBehavior string
 
+// KernelTunableBehavior kernel flags
 const (
 	KernelTunableWarn   KernelTunableBehavior = "warn"
 	KernelTunableError  KernelTunableBehavior = "error"
@@ -817,7 +820,7 @@ func getPidsForProcess(name, pidFile string) ([]int, error) {
 	return []int{}, err
 }
 
-// Ensures that the Docker daemon is in the desired container.
+// EnsureDockerInContainer ensures that the Docker daemon is in the desired container.
 // Temporarily export the function to be used by dockershim.
 // TODO(yujuhong): Move this function to dockershim once kubelet migrates to
 // dockershim as the default.

@@ -43,7 +43,7 @@ const (
 	defaultSandboxImage = "k8s.gcr.io/pause:3.2"
 
 	// Various default sandbox resources requests/limits.
-	defaultSandboxCPUshares int64 = 2
+	defaultSandboxCPUShares int64 = 2
 
 	// defaultSandboxOOMAdj is the oom score adjustment for the docker
 	// sandbox container. Using this OOM adj makes it very unlikely, but not
@@ -602,7 +602,7 @@ func (ds *dockerService) applySandboxLinuxOptions(hc *dockercontainer.HostConfig
 func (ds *dockerService) applySandboxResources(hc *dockercontainer.HostConfig, lc *runtimeapi.LinuxPodSandboxConfig) error {
 	hc.Resources = dockercontainer.Resources{
 		MemorySwap: DefaultMemorySwap(),
-		CPUShares:  defaultSandboxCPUshares,
+		CPUShares:  defaultSandboxCPUShares,
 		// Use docker's default cpu quota/period.
 	}
 

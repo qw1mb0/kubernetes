@@ -73,7 +73,7 @@ func (ds *dockerService) updateCreateConfig(
 			// Precedence and units for these are described at length in kuberuntime_container_windows.go - generateWindowsContainerConfig()
 			createConfig.HostConfig.Resources = dockercontainer.Resources{
 				Memory:    rOpts.MemoryLimitInBytes,
-				CPUShares: rOpts.CpuShares,
+				CPUShares: rOpts.CPUShares,
 				CPUCount:  rOpts.CpuCount,
 				NanoCPUs:  rOpts.CpuMaximum * int64(runtime.NumCPU()) * (1e9 / 10000),
 			}

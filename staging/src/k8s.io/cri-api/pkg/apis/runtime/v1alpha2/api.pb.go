@@ -2223,11 +2223,11 @@ func (m *KeyValue) GetValue() string {
 // directly.
 type LinuxContainerResources struct {
 	// CPU CFS (Completely Fair Scheduler) period. Default: 0 (not specified).
-	CpuPeriod int64 `protobuf:"varint,1,opt,name=cpu_period,json=cpuPeriod,proto3" json:"cpu_period,omitempty"`
+	CPUPeriod int64 `protobuf:"varint,1,opt,name=cpu_period,json=CPUPeriod,proto3" json:"cpu_period,omitempty"`
 	// CPU CFS (Completely Fair Scheduler) quota. Default: 0 (not specified).
-	CpuQuota int64 `protobuf:"varint,2,opt,name=cpu_quota,json=cpuQuota,proto3" json:"cpu_quota,omitempty"`
+	CPUQuota int64 `protobuf:"varint,2,opt,name=cpu_quota,json=CPUQuota,proto3" json:"cpu_quota,omitempty"`
 	// CPU shares (relative weight vs. other containers). Default: 0 (not specified).
-	CpuShares int64 `protobuf:"varint,3,opt,name=cpu_shares,json=cpuShares,proto3" json:"cpu_shares,omitempty"`
+	CPUShares int64 `protobuf:"varint,3,opt,name=cpu_shares,json=CPUShares,proto3" json:"cpu_shares,omitempty"`
 	// Memory limit in bytes. Default: 0 (not specified).
 	MemoryLimitInBytes int64 `protobuf:"varint,4,opt,name=memory_limit_in_bytes,json=memoryLimitInBytes,proto3" json:"memory_limit_in_bytes,omitempty"`
 	// OOMScoreAdj adjusts the oom-killer score. Default: 0 (not specified).
@@ -2274,23 +2274,23 @@ func (m *LinuxContainerResources) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_LinuxContainerResources proto.InternalMessageInfo
 
-func (m *LinuxContainerResources) GetCpuPeriod() int64 {
+func (m *LinuxContainerResources) GetCPUPeriod() int64 {
 	if m != nil {
-		return m.CpuPeriod
+		return m.CPUPeriod
 	}
 	return 0
 }
 
-func (m *LinuxContainerResources) GetCpuQuota() int64 {
+func (m *LinuxContainerResources) GetCPUQuota() int64 {
 	if m != nil {
-		return m.CpuQuota
+		return m.CPUQuota
 	}
 	return 0
 }
 
-func (m *LinuxContainerResources) GetCpuShares() int64 {
+func (m *LinuxContainerResources) GetCPUShares() int64 {
 	if m != nil {
-		return m.CpuShares
+		return m.CPUShares
 	}
 	return 0
 }
@@ -2891,7 +2891,7 @@ func (m *WindowsContainerConfig) GetSecurityContext() *WindowsContainerSecurityC
 // resources.
 type WindowsContainerResources struct {
 	// CPU shares (relative weight vs. other containers). Default: 0 (not specified).
-	CpuShares int64 `protobuf:"varint,1,opt,name=cpu_shares,json=cpuShares,proto3" json:"cpu_shares,omitempty"`
+	CPUShares int64 `protobuf:"varint,1,opt,name=cpu_shares,json=CPUShares,proto3" json:"cpu_shares,omitempty"`
 	// Number of CPUs available to the container. Default: 0 (not specified).
 	CpuCount int64 `protobuf:"varint,2,opt,name=cpu_count,json=cpuCount,proto3" json:"cpu_count,omitempty"`
 	// Specifies the portion of processor cycles that this container can use as a percentage times 100.
@@ -2934,9 +2934,9 @@ func (m *WindowsContainerResources) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_WindowsContainerResources proto.InternalMessageInfo
 
-func (m *WindowsContainerResources) GetCpuShares() int64 {
+func (m *WindowsContainerResources) GetCPUShares() int64 {
 	if m != nil {
-		return m.CpuShares
+		return m.CPUShares
 	}
 	return 0
 }
@@ -2948,7 +2948,7 @@ func (m *WindowsContainerResources) GetCpuCount() int64 {
 	return 0
 }
 
-func (m *WindowsContainerResources) GetCpuMaximum() int64 {
+func (m *WindowsContainerResources) getCPUMaximum() int64 {
 	if m != nil {
 		return m.CpuMaximum
 	}
@@ -9985,18 +9985,18 @@ func (m *LinuxContainerResources) MarshalToSizedBuffer(dAtA []byte) (int, error)
 		i--
 		dAtA[i] = 0x20
 	}
-	if m.CpuShares != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.CpuShares))
+	if m.CPUShares != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.CPUShares))
 		i--
 		dAtA[i] = 0x18
 	}
-	if m.CpuQuota != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.CpuQuota))
+	if m.CPUQuota != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.CPUQuota))
 		i--
 		dAtA[i] = 0x10
 	}
-	if m.CpuPeriod != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.CpuPeriod))
+	if m.CPUPeriod != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.CPUPeriod))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -10467,8 +10467,8 @@ func (m *WindowsContainerResources) MarshalToSizedBuffer(dAtA []byte) (int, erro
 		i--
 		dAtA[i] = 0x10
 	}
-	if m.CpuShares != 0 {
-		i = encodeVarintApi(dAtA, i, uint64(m.CpuShares))
+	if m.CPUShares != 0 {
+		i = encodeVarintApi(dAtA, i, uint64(m.CPUShares))
 		i--
 		dAtA[i] = 0x8
 	}
@@ -14107,14 +14107,14 @@ func (m *LinuxContainerResources) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.CpuPeriod != 0 {
-		n += 1 + sovApi(uint64(m.CpuPeriod))
+	if m.CPUPeriod != 0 {
+		n += 1 + sovApi(uint64(m.CPUPeriod))
 	}
-	if m.CpuQuota != 0 {
-		n += 1 + sovApi(uint64(m.CpuQuota))
+	if m.CPUQuota != 0 {
+		n += 1 + sovApi(uint64(m.CPUQuota))
 	}
-	if m.CpuShares != 0 {
-		n += 1 + sovApi(uint64(m.CpuShares))
+	if m.CPUShares != 0 {
+		n += 1 + sovApi(uint64(m.CPUShares))
 	}
 	if m.MemoryLimitInBytes != 0 {
 		n += 1 + sovApi(uint64(m.MemoryLimitInBytes))
@@ -14327,8 +14327,8 @@ func (m *WindowsContainerResources) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if m.CpuShares != 0 {
-		n += 1 + sovApi(uint64(m.CpuShares))
+	if m.CPUShares != 0 {
+		n += 1 + sovApi(uint64(m.CPUShares))
 	}
 	if m.CpuCount != 0 {
 		n += 1 + sovApi(uint64(m.CpuCount))
@@ -16055,9 +16055,9 @@ func (this *LinuxContainerResources) String() string {
 	}
 	repeatedStringForHugepageLimits += "}"
 	s := strings.Join([]string{`&LinuxContainerResources{`,
-		`CpuPeriod:` + fmt.Sprintf("%v", this.CpuPeriod) + `,`,
-		`CpuQuota:` + fmt.Sprintf("%v", this.CpuQuota) + `,`,
-		`CpuShares:` + fmt.Sprintf("%v", this.CpuShares) + `,`,
+		`CPUPeriod:` + fmt.Sprintf("%v", this.CPUPeriod) + `,`,
+		`CPUQuota:` + fmt.Sprintf("%v", this.CPUQuota) + `,`,
+		`CPUShares:` + fmt.Sprintf("%v", this.CPUShares) + `,`,
 		`MemoryLimitInBytes:` + fmt.Sprintf("%v", this.MemoryLimitInBytes) + `,`,
 		`OomScoreAdj:` + fmt.Sprintf("%v", this.OomScoreAdj) + `,`,
 		`CpusetCpus:` + fmt.Sprintf("%v", this.CpusetCpus) + `,`,
@@ -16163,7 +16163,7 @@ func (this *WindowsContainerResources) String() string {
 		return "nil"
 	}
 	s := strings.Join([]string{`&WindowsContainerResources{`,
-		`CpuShares:` + fmt.Sprintf("%v", this.CpuShares) + `,`,
+		`CPUShares:` + fmt.Sprintf("%v", this.CPUShares) + `,`,
 		`CpuCount:` + fmt.Sprintf("%v", this.CpuCount) + `,`,
 		`CpuMaximum:` + fmt.Sprintf("%v", this.CpuMaximum) + `,`,
 		`MemoryLimitInBytes:` + fmt.Sprintf("%v", this.MemoryLimitInBytes) + `,`,
@@ -22177,9 +22177,9 @@ func (m *LinuxContainerResources) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CpuPeriod", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CPUPeriod", wireType)
 			}
-			m.CpuPeriod = 0
+			m.CPUPeriod = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowApi
@@ -22189,16 +22189,16 @@ func (m *LinuxContainerResources) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CpuPeriod |= int64(b&0x7F) << shift
+				m.CPUPeriod |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 2:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CpuQuota", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CPUQuota", wireType)
 			}
-			m.CpuQuota = 0
+			m.CPUQuota = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowApi
@@ -22208,16 +22208,16 @@ func (m *LinuxContainerResources) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CpuQuota |= int64(b&0x7F) << shift
+				m.CPUQuota |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 3:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CpuShares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CPUShares", wireType)
 			}
-			m.CpuShares = 0
+			m.CPUShares = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowApi
@@ -22227,7 +22227,7 @@ func (m *LinuxContainerResources) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CpuShares |= int64(b&0x7F) << shift
+				m.CPUShares |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -23721,9 +23721,9 @@ func (m *WindowsContainerResources) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field CpuShares", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field CPUShares", wireType)
 			}
-			m.CpuShares = 0
+			m.CPUShares = 0
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowApi
@@ -23733,7 +23733,7 @@ func (m *WindowsContainerResources) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.CpuShares |= int64(b&0x7F) << shift
+				m.CPUShares |= int64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}

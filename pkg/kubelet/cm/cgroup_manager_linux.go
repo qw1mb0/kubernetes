@@ -55,6 +55,7 @@ const (
 	systemdSuffix string = ".slice"
 )
 
+// RootCgroupName define root cgroup name
 var RootCgroupName = CgroupName([]string{})
 
 // NewCgroupName composes a new cgroup name.
@@ -83,7 +84,7 @@ func unescapeSystemdCgroupName(part string) string {
 	return strings.Replace(part, "_", "-", -1)
 }
 
-// cgroupName.ToSystemd converts the internal cgroup name to a systemd name.
+// ToSystemd converts the internal cgroup name to a systemd name.
 // For example, the name {"kubepods", "burstable", "pod1234-abcd-5678-efgh"} becomes
 // "/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod1234_abcd_5678_efgh.slice"
 // This function always expands the systemd name into the cgroupfs form. If only
@@ -106,6 +107,7 @@ func (cgroupName CgroupName) ToSystemd() string {
 	return result
 }
 
+// ParseSystemdToCgroupName convert to internal cgroup name and take the last component only.
 func ParseSystemdToCgroupName(name string) CgroupName {
 	driverName := path.Base(name)
 	driverName = strings.TrimSuffix(driverName, systemdSuffix)
@@ -117,10 +119,12 @@ func ParseSystemdToCgroupName(name string) CgroupName {
 	return CgroupName(result)
 }
 
+// ToCgroupfs return full path to cgroupfs
 func (cgroupName CgroupName) ToCgroupfs() string {
 	return "/" + path.Join(cgroupName...)
 }
 
+// ParseCgroupfsToCgroupName split cgroupfs via '/' and return cgroupNmae(components)
 func ParseCgroupfsToCgroupName(name string) CgroupName {
 	components := strings.Split(strings.TrimPrefix(name, "/"), "/")
 	if len(components) == 1 && components[0] == "" {
@@ -129,6 +133,7 @@ func ParseCgroupfsToCgroupName(name string) CgroupName {
 	return CgroupName(components)
 }
 
+// IsSystemdStyleName check if name has systemd suffix
 func IsSystemdStyleName(name string) bool {
 	return strings.HasSuffix(name, systemdSuffix)
 }
@@ -389,26 +394,26 @@ func setSupportedSubsystemsV1(cgroupConfig *libcontainerconfigs.Cgroup) error {
 	return nil
 }
 
-// getCpuWeight converts from the range [2, 262144] to [1, 10000]
-func getCpuWeight(cpuShares *uint64) uint64 {
-	if cpuShares == nil {
+// getCPUWeight converts from the range [2, 262144] to [1, 10000]
+func getCPUWeight(CPUShares *uint64) uint64 {
+	if CPUShares == nil {
 		return 0
 	}
-	if *cpuShares >= 262144 {
+	if *CPUShares >= 262144 {
 		return 10000
 	}
-	return 1 + ((*cpuShares-2)*9999)/262142
+	return 1 + ((*CPUShares-2)*9999)/262142
 }
 
-// getCpuMax returns the cgroup v2 cpu.max setting given the cpu quota and the cpu period
-func getCpuMax(cpuQuota *int64, cpuPeriod *uint64) string {
+// getCPUMax returns the cgroup v2 cpu.max setting given the cpu quota and the cpu period
+func getCPUMax(CPUQuota *int64, CPUPeriod *uint64) string {
 	quotaStr := "max"
 	periodStr := "100000"
-	if cpuQuota != nil {
-		quotaStr = strconv.FormatInt(*cpuQuota, 10)
+	if CPUQuota != nil {
+		quotaStr = strconv.FormatInt(*CPUQuota, 10)
 	}
-	if cpuPeriod != nil {
-		periodStr = strconv.FormatUint(*cpuPeriod, 10)
+	if CPUPeriod != nil {
+		periodStr = strconv.FormatUint(*CPUPeriod, 10)
 	}
 	return fmt.Sprintf("%s %s", quotaStr, periodStr)
 }
@@ -522,17 +527,17 @@ func (m *cgroupManagerImpl) toResources(resourceConfig *ResourceConfig) *libcont
 		resources.Memory = *resourceConfig.Memory
 	}
 	if libcontainercgroups.IsCgroup2UnifiedMode() {
-		resources.CpuWeight = getCpuWeight(resourceConfig.CpuShares)
-		resources.CpuMax = getCpuMax(resourceConfig.CpuQuota, resourceConfig.CpuPeriod)
+		resources.CpuWeight = getCPUWeight(resourceConfig.CPUShares)
+		resources.CpuMax = getCPUMax(resourceConfig.CPUQuota, resourceConfig.CPUPeriod)
 	} else {
-		if resourceConfig.CpuShares != nil {
-			resources.CpuShares = *resourceConfig.CpuShares
+		if resourceConfig.CPUShares != nil {
+			resources.CPUShares = *resourceConfig.CPUShares
 		}
-		if resourceConfig.CpuQuota != nil {
-			resources.CpuQuota = *resourceConfig.CpuQuota
+		if resourceConfig.CPUQuota != nil {
+			resources.CPUQuota = *resourceConfig.CPUQuota
 		}
-		if resourceConfig.CpuPeriod != nil {
-			resources.CpuPeriod = *resourceConfig.CpuPeriod
+		if resourceConfig.CPUPeriod != nil {
+			resources.CPUPeriod = *resourceConfig.CPUPeriod
 		}
 	}
 	if utilfeature.DefaultFeatureGate.Enabled(kubefeatures.SupportPodPidsLimit) || utilfeature.DefaultFeatureGate.Enabled(kubefeatures.SupportNodePidsLimit) {
@@ -715,10 +720,10 @@ func (m *cgroupManagerImpl) Pids(name CgroupName) []int {
 
 // ReduceCPULimits reduces the cgroup's cpu shares to the lowest possible value
 func (m *cgroupManagerImpl) ReduceCPULimits(cgroupName CgroupName) error {
-	// Set lowest possible CpuShares value for the cgroup
+	// Set lowest possible CPUShares value for the cgroup
 	minimumCPUShares := uint64(MinShares)
 	resources := &ResourceConfig{
-		CpuShares: &minimumCPUShares,
+		CPUShares: &minimumCPUShares,
 	}
 	containerConfig := &CgroupConfig{
 		Name:               cgroupName,

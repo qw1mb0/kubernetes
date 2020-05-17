@@ -37,8 +37,8 @@ import (
 	"k8s.io/kubernetes/pkg/kubelet/cm/util"
 )
 
+// Taken from lmctfy https://github.com/google/lmctfy/blob/master/lmctfy/controllers/cpu_controller.cc
 const (
-	// Taken from lmctfy https://github.com/google/lmctfy/blob/master/lmctfy/controllers/cpu_controller.cc
 	MinShares     = 2
 	SharesPerCPU  = 1024
 	MilliCPUToCPU = 1000
@@ -109,7 +109,7 @@ func HugePageLimits(resourceList v1.ResourceList) map[int64]int64 {
 }
 
 // ResourceConfigForPod takes the input pod and outputs the cgroup resource config.
-func ResourceConfigForPod(pod *v1.Pod, enforceCPULimits bool, cpuPeriod uint64) *ResourceConfig {
+func ResourceConfigForPod(pod *v1.Pod, enforceCPULimits bool, CPUPeriod uint64) *ResourceConfig {
 	// sum requests and limits.
 	reqs, limits := resource.PodRequestsAndLimits(pod)
 
@@ -127,8 +127,8 @@ func ResourceConfigForPod(pod *v1.Pod, enforceCPULimits bool, cpuPeriod uint64) 
 	}
 
 	// convert to CFS values
-	cpuShares := MilliCPUToShares(cpuRequests)
-	cpuQuota := MilliCPUToQuota(cpuLimits, int64(cpuPeriod))
+	CPUShares := MilliCPUToShares(cpuRequests)
+	CPUQuota := MilliCPUToQuota(cpuLimits, int64(CPUPeriod))
 
 	// track if limits were applied for each resource.
 	memoryLimitsDeclared := true
@@ -154,7 +154,7 @@ func ResourceConfigForPod(pod *v1.Pod, enforceCPULimits bool, cpuPeriod uint64) 
 
 	// quota is not capped when cfs quota is disabled
 	if !enforceCPULimits {
-		cpuQuota = int64(-1)
+		CPUQuota = int64(-1)
 	}
 
 	// determine the qos class
@@ -163,22 +163,22 @@ func ResourceConfigForPod(pod *v1.Pod, enforceCPULimits bool, cpuPeriod uint64) 
 	// build the result
 	result := &ResourceConfig{}
 	if qosClass == v1.PodQOSGuaranteed {
-		result.CpuShares = &cpuShares
-		result.CpuQuota = &cpuQuota
-		result.CpuPeriod = &cpuPeriod
+		result.CPUShares = &CPUShares
+		result.CPUQuota = &CPUQuota
+		result.CPUPeriod = &CPUPeriod
 		result.Memory = &memoryLimits
 	} else if qosClass == v1.PodQOSBurstable {
-		result.CpuShares = &cpuShares
+		result.CPUShares = &CPUShares
 		if cpuLimitsDeclared {
-			result.CpuQuota = &cpuQuota
-			result.CpuPeriod = &cpuPeriod
+			result.CPUQuota = &CPUQuota
+			result.CPUPeriod = &CPUPeriod
 		}
 		if memoryLimitsDeclared {
 			result.Memory = &memoryLimits
 		}
 	} else {
 		shares := uint64(MinShares)
-		result.CpuShares = &shares
+		result.CPUShares = &shares
 	}
 	result.HugePageLimit = hugePageLimits
 	return result

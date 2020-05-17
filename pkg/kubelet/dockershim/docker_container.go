@@ -444,9 +444,9 @@ func (ds *dockerService) UpdateContainerResources(_ context.Context, r *runtimea
 	resources := r.Linux
 	updateConfig := dockercontainer.UpdateConfig{
 		Resources: dockercontainer.Resources{
-			CPUPeriod:  resources.CpuPeriod,
-			CPUQuota:   resources.CpuQuota,
-			CPUShares:  resources.CpuShares,
+			CPUPeriod:  resources.CPUPeriod,
+			CPUQuota:   resources.CPUQuota,
+			CPUShares:  resources.CPUShares,
 			Memory:     resources.MemoryLimitInBytes,
 			CpusetCpus: resources.CpusetCpus,
 			CpusetMems: resources.CpusetMems,

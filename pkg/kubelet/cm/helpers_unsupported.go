@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 )
 
+// Unsupported throughput settings
 const (
 	MinShares     = 0
 	SharesPerCPU  = 0
@@ -42,7 +43,7 @@ func MilliCPUToShares(milliCPU int64) int64 {
 }
 
 // ResourceConfigForPod takes the input pod and outputs the cgroup resource config.
-func ResourceConfigForPod(pod *v1.Pod, enforceCPULimit bool, cpuPeriod uint64) *ResourceConfig {
+func ResourceConfigForPod(pod *v1.Pod, enforceCPULimit bool, CPUPeriod uint64) *ResourceConfig {
 	return nil
 }
 

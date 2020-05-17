@@ -20,6 +20,7 @@ import (
 	"k8s.io/api/core/v1"
 )
 
+// NewFakeInternalContainerLifecycle return fake internal container lifecycle
 func NewFakeInternalContainerLifecycle() *fakeInternalContainerLifecycle {
 	return &fakeInternalContainerLifecycle{}
 }
